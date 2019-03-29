@@ -21,9 +21,7 @@ class Song
     column_names.compact
   end
 
-  self.column_names.each do |col_name|
-    attr_accessor col_name.to_sym
-  end
+  attr_accessors = self.column_names.each { |col_name| attr_accessor col_name.to_sym}
 
   def initialize(options={})
     options.each do |property, value|
@@ -46,6 +44,7 @@ class Song
     self.class.column_names.each do |col_name|
       values << "'#{send(col_name)}'" unless send(col_name).nil?
     end
+    binding.pry
     values.join(", ")
   end
 
@@ -59,6 +58,3 @@ class Song
   end
 
 end
-
-
-
