@@ -2,6 +2,8 @@ require_relative "../config/environment.rb"
 require 'active_support/inflector'
 
 class Song
+  attr_accessor :name, :album
+  attr_reader :id
 
 
   def self.table_name
@@ -59,6 +61,3 @@ class Song
   end
 
 end
-
-
-
