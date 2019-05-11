@@ -1,6 +1,6 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
-
+require 'pry'
 class Song
 
 
@@ -10,10 +10,13 @@ class Song
 
   def self.column_names
     DB[:conn].results_as_hash = true
-
+    
+    #query a table for the names of its columns
     sql = "pragma table_info('#{table_name}')"
-
+    
+    #table_info returns array of hashes of column names
     table_info = DB[:conn].execute(sql)
+    
     column_names = []
     table_info.each do |row|
       column_names << row["name"]
@@ -33,7 +36,9 @@ class Song
 
   def save
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
+     
     DB[:conn].execute(sql)
+    
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
@@ -50,6 +55,7 @@ class Song
   end
 
   def col_names_for_insert
+     
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
 
