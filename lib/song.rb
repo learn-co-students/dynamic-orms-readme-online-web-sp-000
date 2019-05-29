@@ -45,6 +45,7 @@ class Song
     values = []
     self.class.column_names.each do |col_name|
       values << "'#{send(col_name)}'" unless send(col_name).nil?
+
     end
     values.join(", ")
   end
@@ -54,11 +55,8 @@ class Song
   end
 
   def self.find_by_name(name)
-    sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+    sql = "SELECT * FROM #{self.table_name} WHERE name ='#{name}' "
     DB[:conn].execute(sql)
   end
 
 end
-
-
-
