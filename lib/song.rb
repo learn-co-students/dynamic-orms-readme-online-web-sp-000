@@ -58,7 +58,5 @@ class Song
     DB[:conn].execute(sql)
   end
 
-end
-
 
 
