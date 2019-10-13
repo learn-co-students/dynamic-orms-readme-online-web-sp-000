@@ -2,12 +2,19 @@ require_relative "../config/environment.rb"
 require 'active_support/inflector'
 
 class Song
+  attr_accessor :name, :album
+  attr_reader :id
 
+  def initialize(id=nil, name, album)
+    @id = id 
+    @name = name 
+    @album = album 
+  end
 
   def self.table_name
     self.to_s.downcase.pluralize
   end
-
+  
   def self.column_names
     DB[:conn].results_as_hash = true
 
@@ -59,6 +66,3 @@ class Song
   end
 
 end
-
-
-
