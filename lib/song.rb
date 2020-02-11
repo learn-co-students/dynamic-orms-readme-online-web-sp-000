@@ -1,10 +1,12 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
+require 'pry'
 
 class Song
 
 
   def self.table_name
+    binding.pry
     self.to_s.downcase.pluralize
   end
 
