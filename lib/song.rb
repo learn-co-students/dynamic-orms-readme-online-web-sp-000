@@ -15,8 +15,8 @@ class Song
 
     table_info = DB[:conn].execute(sql)
     column_names = []
-    table_info.each do |row|
-      column_names << row["name"]
+    table_info.each do |column|
+      column_names << column["name"]
     end
     column_names.compact
   end
@@ -40,6 +40,10 @@ class Song
   def table_name_for_insert
     self.class.table_name
   end
+  
+  def col_names_for_insert
+    self.class.column_names.delete_if {|col| col == "id"}.join(", ")
+  end
 
   def values_for_insert
     values = []
@@ -47,10 +51,6 @@ class Song
       values << "'#{send(col_name)}'" unless send(col_name).nil?
     end
     values.join(", ")
-  end
-
-  def col_names_for_insert
-    self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
 
   def self.find_by_name(name)
