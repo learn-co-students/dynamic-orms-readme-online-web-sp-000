@@ -1,6 +1,6 @@
 require 'sqlite3'
 
-
+# creates the db, drop songs table to avoid error, create songs table
 DB = {:conn => SQLite3::Database.new("db/songs.db")}
 DB[:conn].execute("DROP TABLE IF EXISTS songs")
 
