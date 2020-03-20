@@ -1,3 +1,4 @@
+require 'pry'
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
 
@@ -26,6 +27,7 @@ class Song
   end
 
   def initialize(options={})
+    binding.pry
     options.each do |property, value|
       self.send("#{property}=", value)
     end
