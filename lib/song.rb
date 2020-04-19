@@ -31,6 +31,7 @@ class Song
     end
   end
 
+  # note: do NOT use string interpolation for SQL queries. use the other technique instead
   def save
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
     DB[:conn].execute(sql)
@@ -59,6 +60,3 @@ class Song
   end
 
 end
-
-
-
