@@ -1,6 +1,6 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
-
+#abstracting ORM to be usable in any class
 class Song
 
 
