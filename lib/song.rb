@@ -50,6 +50,7 @@ class Song
   end
 
   def col_names_for_insert
+    #insert here
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
 
