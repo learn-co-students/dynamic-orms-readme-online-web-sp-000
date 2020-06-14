@@ -9,5 +9,13 @@ song = Song.new(name: "Hello", album: "25")
 puts "song name: " + song.name
 puts "song album: " + song.album
 song.save
+song = Song.new(name: "Maps and Legends", album: "Fables of the Reconstruction")
+puts "song name: " + song.name
+puts "song album: " + song.album
+song.save
+song = Song.new(name: "Driver 8", album: "Fables of the Reconstruction")
+puts "song name: " + song.name
+puts "song album: " + song.album
+song.save
 
 DB[:conn].execute("SELECT * FROM songs")
