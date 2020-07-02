@@ -1,6 +1,7 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
 
+
 class Song
 
 
@@ -19,6 +20,7 @@ class Song
       column_names << row["name"]
     end
     column_names.compact
+
   end
 
   self.column_names.each do |col_name|
@@ -33,7 +35,9 @@ class Song
 
   def save
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
+
     DB[:conn].execute(sql)
+    
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
@@ -49,6 +53,12 @@ class Song
     values.join(", ")
   end
 
+  # def values_for_insert
+  #     self.class.column_names.map do |col_name|
+  #       "'#{send(col_name)}'" unless send(col_name).nil?
+  #     end.compact.join(", ")
+  # end
+
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
@@ -58,7 +68,15 @@ class Song
     DB[:conn].execute(sql)
   end
 
+  # def self.find_by_name(name)
+  #   DB[:conn].execute("SELECT * FROM #{self.table_name} WHERE name = ?", name)
+  # end
+
 end
+
+
+
+
 
 
 
