@@ -3,6 +3,12 @@ require 'active_support/inflector'
 
 class Song
 
+  def initialize(options={})
+    options.each do |property, value|
+      self.send("#{property}=", value)
+    end
+  end
+
 
   def self.table_name
     self.to_s.downcase.pluralize
@@ -15,9 +21,11 @@ class Song
 
     table_info = DB[:conn].execute(sql)
     column_names = []
+
     table_info.each do |row|
       column_names << row["name"]
     end
+
     column_names.compact
   end
 
