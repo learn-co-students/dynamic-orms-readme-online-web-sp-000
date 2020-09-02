@@ -37,9 +37,11 @@ class Song
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
+
   def table_name_for_insert
     self.class.table_name
   end
+  #Abstracting table names
 
   def values_for_insert
     values = []
@@ -48,13 +50,20 @@ class Song
     end
     values.join(", ")
   end
+  #iterates over the column names stored in 'column_names' and uses .send with each individual 
+  #column name to invoke the method by that same name and capture the return value
+  #push the return value of invoking a method via the .send method(unless value is nil)
+
 
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
+  #removes id from column names because SQL database handles the creation of an ID for a given 
+  #table row and then we will use that ID to assign a value to the original object's id attribute
+  #returns => "name, album"
 
   def self.find_by_name(name)
-    sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'"
+    sql = "SELECT * FROM #{self.table_name} WHERE name = '#{name}'" #string interpolation creates SQL injection vulnerability
     DB[:conn].execute(sql)
   end
 
