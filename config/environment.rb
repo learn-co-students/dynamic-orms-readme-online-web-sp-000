@@ -13,4 +13,8 @@ sql = <<-SQL
 SQL
 
 DB[:conn].execute(sql)
+
 DB[:conn].results_as_hash = true
+#this makes it return an array of hashes instead of an array of arrays. 
+#instead of [[1, "Hello", "25"]]
+#it returns {"id"=>1, "name"=>"Hello", "album"=>"25", 0 => 1, 1 => "Hello", 2 => "25"}
