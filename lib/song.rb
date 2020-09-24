@@ -1,5 +1,5 @@
 require_relative "../config/environment.rb"
-require 'active_support/inflector'
+require 'active_support/inflector' # provides #pluralize method
 
 class Song
 
@@ -18,18 +18,23 @@ class Song
     table_info.each do |row|
       column_names << row["name"]
     end
-    column_names.compact
+    column_names.compact #compact gets ride of nil values 
   end
 
   self.column_names.each do |col_name|
-    attr_accessor col_name.to_sym
+    attr_accessor col_name.to_sym # attr_accessors must be named with symbols 
   end
 
-  def initialize(options={})
+  def initialize(options={}) # parameter named "options" defaults to an empty hash
     options.each do |property, value|
-      self.send("#{property}=", value)
+      self.send("#{property}=", value) #send is a metaprogramming method 
+
+      # works as long as each property has a corresponding attr_accessor
     end
   end
+
+  # in order to use a class method inside an instance (abstractly, i.e., not referring to the specific class):
+  # self.class.some_class_method
 
   def save
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
