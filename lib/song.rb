@@ -16,14 +16,15 @@ class Song
     table_info = DB[:conn].execute(sql)
     column_names = []
     table_info.each do |row|
-      column_names << row["name"]
+      column_names << row["name"] 
     end
-    column_names.compact
+    column_names.compact # ["id", "name", "album"] resulting output
   end
 
   self.column_names.each do |col_name|
     attr_accessor col_name.to_sym
   end
+
 
   def initialize(options={})
     options.each do |property, value|
