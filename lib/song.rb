@@ -1,5 +1,6 @@
 require_relative "../config/environment.rb"
 require 'active_support/inflector'
+require 'pry'
 
 class Song
 
@@ -32,8 +33,10 @@ class Song
   end
 
   def save
+    binding.pry
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
-    DB[:conn].execute(sql)
+    sql2 = "SELECT * FROM #{table_name_for_insert} WHERE #{self.class.column_names[1]} AND #{col_names_for_insert[2]}"
+    DB[:conn].execute(sql) unless 
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
@@ -42,9 +45,10 @@ class Song
   end
 
   def values_for_insert
+    # binding.pry
     values = []
-    self.class.column_names.each do |col_name|
-      values << "'#{send(col_name)}'" unless send(col_name).nil?
+    self.class.column_names.each do |name|
+      values << "'#{send(name)}'" unless send(name).nil?
     end
     values.join(", ")
   end
