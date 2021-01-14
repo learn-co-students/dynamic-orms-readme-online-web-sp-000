@@ -33,11 +33,19 @@ class Song
   end
 
   def save
-    binding.pry
+    # binding.pry
     sql = "INSERT INTO #{table_name_for_insert} (#{col_names_for_insert}) VALUES (#{values_for_insert})"
-    sql2 = "SELECT * FROM #{table_name_for_insert} WHERE #{self.class.column_names[1]} AND #{col_names_for_insert[2]}"
-    DB[:conn].execute(sql) unless 
+    
+    #Not exactly 'MetaProgramming' just playing around, this doesn't allow room for an exact search of data if there were more than two attributes created from the database, aside from the ID. Working with and Understanding the send and send.class / self and self.class
+    sql2 = <<-SQL 
+    SELECT * FROM #{table_name_for_insert} 
+    WHERE #{self.class.column_names[1]} = '#{send(self.class.column_names[1])}' 
+    AND #{self.class.column_names[2]} = '#{send(self.class.column_names[2])}'
+    SQL
+    
+    DB[:conn].execute(sql) unless !DB[:conn].execute(sql2).empty?
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
+    # puts DB[:conn].execute(sql2)
   end
 
   def table_name_for_insert
