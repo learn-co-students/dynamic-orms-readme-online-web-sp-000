@@ -14,3 +14,5 @@ SQL
 
 DB[:conn].execute(sql)
 DB[:conn].results_as_hash = true
+#return it as a hash with the column names as keys
+#{"id"=>1, "name"=>"Hello", "album"=>"25", 0 => 1, 1 => "Hello", 2 => "25"}
