@@ -3,12 +3,12 @@ require 'active_support/inflector'
 
 class Song
 
-
-  def self.table_name
+  #pluralize method is provided to us by the active_support/inflector
+  def self.table_name #grabs us the table name
     self.to_s.downcase.pluralize
   end
 
-  def self.column_names
+  def self.column_names #grabs us those column names
     DB[:conn].results_as_hash = true
 
     sql = "pragma table_info('#{table_name}')"
@@ -18,14 +18,14 @@ class Song
     table_info.each do |row|
       column_names << row["name"]
     end
-    column_names.compact
+    column_names.compact #get rid of any nil values that may end up in our collection
   end
 
   self.column_names.each do |col_name|
     attr_accessor col_name.to_sym
   end
 
-  def initialize(options={})
+  def initialize(options={}) #metaprogramming #send method to interpolate the name of each hash key as a method that we set equal to that key's value
     options.each do |property, value|
       self.send("#{property}=", value)
     end
@@ -59,6 +59,3 @@ class Song
   end
 
 end
-
-
-
