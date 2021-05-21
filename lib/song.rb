@@ -3,28 +3,35 @@ require 'active_support/inflector'
 
 class Song
 
-
+# grabs the table name we want to query for column names
   def self.table_name
     self.to_s.downcase.pluralize
   end
 
+  # To query a table for the names of its columns
   def self.column_names
     DB[:conn].results_as_hash = true
 
-    sql = "pragma table_info('#{table_name}')"
+    sql = "pragma table_info('#{table_name}')" #returns array of hashes describing the table itself
+    # but we just need the name of each column 
 
-    table_info = DB[:conn].execute(sql)
+    table_info = DB[:conn].execute(sql) #this is the array and we'll iterate and the shove into 
     column_names = []
     table_info.each do |row|
       column_names << row["name"]
     end
-    column_names.compact
+    column_names.compact #compact to not get any nil info. We get the names tha we'll use for attr_accessor
   end
 
+  # iterate over the column names and set an attr_accessor for each one,
+  #  making sure to convert the column name string into a symbol with the #to_sym method, 
+  # since attr_accessors must be named with symbols.
   self.column_names.each do |col_name|
     attr_accessor col_name.to_sym
   end
 
+# We expect #new to be called with a hash, so when we refer to options inside the #initialize method, 
+# we expect to be operating on a hash.
   def initialize(options={})
     options.each do |property, value|
       self.send("#{property}=", value)
@@ -37,6 +44,7 @@ class Song
     @id = DB[:conn].execute("SELECT last_insert_rowid() FROM #{table_name_for_insert}")[0][0]
   end
 
+  # to use a class method inside an instance method 'self.class'
   def table_name_for_insert
     self.class.table_name
   end
@@ -49,6 +57,7 @@ class Song
     values.join(", ")
   end
 
+  # We need to remove id cuz the database will assign the id`
   def col_names_for_insert
     self.class.column_names.delete_if {|col| col == "id"}.join(", ")
   end
