@@ -2,6 +2,7 @@ require_relative "../config/environment.rb"
 require 'active_support/inflector'
 
 class Song
+  # comment
 
 
   def self.table_name
