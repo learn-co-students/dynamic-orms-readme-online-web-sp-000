@@ -10,4 +10,20 @@ puts "song name: " + song.name
 puts "song album: " + song.album
 song.save
 
+song = Song.new(name: "Mother", album: "Synchronicity")
+puts "song name: " + song.name
+puts "song album: " + song.album
+song.save
+
+song = Song.new(name: "Eleanor Rigby", album: "Revolver")
+puts "song name: " + song.name
+puts "song album: " + song.album
+song.save
+
 DB[:conn].execute("SELECT * FROM songs")
+
+puts "title"
+title = gets.strip
+song = Song.find_by_name(title).first
+
+puts "\nYes, we have #{song["name"]} from the album #{song["album"]}"
