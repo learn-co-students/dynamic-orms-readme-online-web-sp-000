@@ -9,5 +9,12 @@ song = Song.new(name: "Hello", album: "25")
 puts "song name: " + song.name
 puts "song album: " + song.album
 song.save
+song = Song.new(address: 4145, place: "home")
 
-DB[:conn].execute("SELECT * FROM songs")
+
+song = Song.new(name: "Reptile", album: "The Downward Spiral")
+song.save
+
+all = DB[:conn].execute("SELECT * FROM songs")
+
+all.each {|song| inst = Song.new(song); puts "Title: #{inst.name} \tAlbum: #{inst.album}"}
